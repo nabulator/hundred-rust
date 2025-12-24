@@ -9,28 +9,40 @@ pub struct Ticket {
     status: String,
 }
 
-impl Ticket {
-    pub fn new(title: String, description: String, status: String) -> Ticket {
-        if title.is_empty() {
+fn check_t(new_title: String) -> String {
+        if new_title.is_empty() {
             panic!("Title cannot be empty");
         }
-        if title.len() > 50 {
+        if new_title.len() > 50 {
             panic!("Title cannot be longer than 50 bytes");
         }
-        if description.is_empty() {
-            panic!("Description cannot be empty");
-        }
-        if description.len() > 500 {
-            panic!("Description cannot be longer than 500 bytes");
-        }
-        if status != "To-Do" && status != "In Progress" && status != "Done" {
-            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
-        }
+        new_title
+    }
+
+fn check_d(new_description: String) -> String {
+    if new_description.is_empty() {
+        panic!("Description cannot be empty");
+    }
+    if new_description.len() > 500 {
+        panic!("Description cannot be longer than 500 bytes");
+    }
+    new_description
+}
+fn check_s(new_status: String) -> String{
+    if new_status != "To-Do" && new_status != "In Progress" && new_status != "Done" { 
+    panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed"); 
+    }
+    new_status
+}
+
+
+impl Ticket {
+    pub fn new(title: String, description: String, status: String) -> Ticket {
 
         Ticket {
-            title,
-            description,
-            status,
+            title: check_t(title),
+            description: check_d(description),
+            status: check_s(status),
         }
     }
 
@@ -45,6 +57,18 @@ impl Ticket {
     pub fn status(&self) -> &String {
         &self.status
     }
+
+    
+    pub fn set_description(&mut self, desc: String) {
+        self.description = check_d(desc);
+    }
+    pub fn set_title(&mut self, t: String) {
+        self.title = check_t(t);
+    }
+    pub fn set_status(&mut self, s: String) {
+        self.status = check_s(s);
+    }
+    
 }
 
 #[cfg(test)]
